@@ -1,92 +1,8 @@
 <html>
 <head>
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="bbImgMarquee.jquery.js"></script>
 	<script>
-		/**
-		 * EARLY ALPHA
-		 * Author: Benny Bennet Jürgens
-		 * Version: 0.0.1
-		 * 
-		 * The MIT License (MIT)
-		 * Copyright (c) 2013 Benny Bennet Jürgens
-		 *
-		 * Permission is hereby granted, free of charge, to any person obtaining a copy
-		 * of this software and associated documentation files (the "Software"), to deal
-		 * in the Software without restriction, including without limitation the rights
-		 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-		 * copies of the Software, and to permit persons to whom the Software is
-		 * furnished to do so, subject to the following conditions:
-		 *
-		 * The above copyright notice and this permission notice shall be included in
-		 * all copies or substantial portions of the Software.
-		 * 
-		 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-		 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-		 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-		 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-		 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-		 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-		 * THE SOFTWARE.
-		 */
-		;(function( $ ) {
-			"use strict";
-
-			$.fn.bbImgMarquee = function( options ) {
-				options = $.extend(true, options, $.fn.bbImgMarquee.defaults);
-				var treadmill = this;
-				var movePlate = (function() {
-					var windowWidth = $( $(treadmill).find('[class*=__window]')[0] ).width();
-					var plateWidth = $( $(treadmill).find('[class*=__plate]')[0] ).width();
-					return function( el ) {
-						// TODO: if el === __plate > ok > else > error
-						var $el = $( el );
-						var left = parseInt($(el).css('left'));
-						if( Math.abs(left) >= (plateWidth - windowWidth) ) {
-							left = 0;
-						} else {
-							if( (left % windowWidth) === 0 ) {
-								left -= windowWidth;
-							} else {
-								left -= (windowWidth - (Math.abs(left) % windowWidth));
-							}
-						}
-						$el.animate({
-							left: left
-						}, 2500);
-					};
-				})();
-
-				this.each(function() {
-					var $this = $( this );
-					var plate = $this.find('[class*=__plate]');
-					var startIntervall = function() { return window.setInterval(function() { movePlate( plate ) }, options.intervall); };
-					
-					var intervalID = startIntervall();
-					$this.find('[class*=__more]').click(function() { 
-						movePlate( plate ); 
-						window.clearInterval( intervalID );
-						intervalID = startIntervall();
-					});
-					if( options.stopOnMouseOver ) {
-						$(plate).mouseover(function() {
-								$(this).stop();
-								window.clearInterval( intervalID );
-							})
-							.mouseleave(function() {
-								intervalID = startIntervall();
-							});
-					}
-				});
-				return this;
-			}
-
-			$.fn.bbImgMarquee.defaults = {
-				intervall: 15000,
-				stopOnMouseOver: true
-			};
-
-		})( jQuery );
-		
 		$(document).ready(function() {
 			$('.marquee').bbImgMarquee();	
 		});	
@@ -127,7 +43,7 @@
 				<p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p>
 			</div>
 		</div>	
-		<div class="marquee__more">more</div>
+		<div class="marquee__next">more</div>
 	</div>
 </body>
 </html>
